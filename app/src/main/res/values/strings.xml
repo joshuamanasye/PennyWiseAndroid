@@ -4,9 +4,10 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_login">Login</string>
-    <string name="action_sign_up">Sign up</string>
+    <string name="action_register">Register</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password is incorrect</string>
     <string name="login_failed">"Login failed"</string>
     <string name="link_register">Don\'t have an account? Register</string>
+    <string name="link_login">Already an account? Login</string>
 </resources>

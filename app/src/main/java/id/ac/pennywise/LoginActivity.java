@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        TextView registerLink = findViewById(R.id.register_link);
+        TextView registerLink = findViewById(R.id.registerTxt);
 
         String fullText = "Don't have an account? Register";
         SpannableString spannableString = new SpannableString(fullText);
