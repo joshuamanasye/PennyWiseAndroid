@@ -2,5 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="palm_springs_splash_green">#218c74</color>
+    <color name="green_teal">#05c46b</color>
+    <color name="grey1">#1e1f22</color>
+    <color name="grey2">#2b2d31</color>
+    <color name="grey3">#313338</color>
+    <color name="light_grey">#80848e</color>
 </resources>

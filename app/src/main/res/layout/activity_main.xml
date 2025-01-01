@@ -18,24 +18,87 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:orientation="horizontal"
+        android:gravity="bottom"
+        android:background="@color/grey1"
         android:id="@+id/nav"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="View Data"
-            android:id="@+id/viewBtn"
-            android:layout_margin="8dp"/>
+            android:layout_margin="0dp"
+            android:drawablePadding="0dp"
+            android:padding="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:drawableTop="@drawable/house_door_fill"
+            android:text="@string/home"
+            android:textSize="12sp"
+            android:textColor="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:id="@+id/homeBtn" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Add Data"
-            android:id="@+id/addBtn"
-            android:layout_margin="8dp"/>
+            android:layout_margin="0dp"
+            android:drawablePadding="0dp"
+            android:padding="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:drawableTop="@drawable/cash_coin"
+            android:text="@string/transactions"
+            android:textSize="12sp"
+            android:textColor="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:id="@+id/transactionBtn" />
+
+        <ImageButton
+            android:id="@+id/addTransaction"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/add_transaction"
+            android:padding="8dp"
+            android:src="@drawable/plus_circle_fill"
+            android:background="@android:color/transparent"
+            tools:ignore="ImageContrastCheck" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:drawablePadding="0dp"
+            android:padding="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:drawableTop="@drawable/bar_chart_line_fill"
+            android:text="@string/reports"
+            android:textSize="12sp"
+            android:textColor="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:id="@+id/reportBtn" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:drawablePadding="0dp"
+            android:padding="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:drawableTop="@drawable/wallet2"
+            android:text="@string/budgets"
+            android:textSize="12sp"
+            android:textColor="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:id="@+id/budgetBtn" />
 
     </LinearLayout>
 

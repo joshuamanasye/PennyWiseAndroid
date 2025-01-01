@@ -25,18 +25,19 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         TextView registerLink = findViewById(R.id.registerTxt);
 
         String fullText = "Don't have an account? Register";
         SpannableString spannableString = new SpannableString(fullText);
 
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.palm_springs_splash_green, getTheme()));
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.green_teal, getTheme()));
         spannableString.setSpan(colorSpan, fullText.indexOf("Register"), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         registerLink.setText(spannableString);
 
         registerLink.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
             startActivity(intent);
 
             finish();

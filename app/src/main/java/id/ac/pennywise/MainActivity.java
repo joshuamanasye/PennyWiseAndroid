@@ -1,15 +1,19 @@
 package id.ac.pennywise;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.elevation.SurfaceColors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,8 +35,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        // Change the navigation bar color
+        getWindow().setNavigationBarColor(getResources().getColor(R.color.grey1, getTheme()));
+
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
 
 //        FragmentViewProject fragmentViewProject = new FragmentViewProject();
 //        FragmentAddProject fragmentAddProject = new FragmentAddProject();
