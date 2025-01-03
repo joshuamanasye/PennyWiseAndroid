@@ -1,4 +1,4 @@
-package id.ac.pennywise.model;
+package id.ac.pennywise.models;
 
 public class CategoryModel {
     private String id;

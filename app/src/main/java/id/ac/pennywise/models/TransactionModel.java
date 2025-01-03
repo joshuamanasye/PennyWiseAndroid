@@ -1,4 +1,4 @@
-package id.ac.pennywise.model;
+package id.ac.pennywise.models;
 
 public class TransactionModel {
     private String id;
