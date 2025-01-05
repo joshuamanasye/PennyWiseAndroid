@@ -4,5 +4,6 @@
         <!-- Customize your dark theme here. -->
          <item name="colorPrimary">@color/grey1</item>
         <item name="android:navigationBarColor">@color/grey1</item>
+        <item name="colorAccent">@color/green_teal</item>
     </style>
 </resources>

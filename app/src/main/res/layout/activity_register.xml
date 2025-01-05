@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="32dp"
     android:paddingVertical="16dp"
-    tools:context=".RegisterActivity">
+    android:background="@color/grey1"
+    tools:context=".activities.RegisterActivity">
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/emailEdt"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
         android:autofillHints="username"
@@ -24,9 +25,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/passwordEdt"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:autofillHints="password"
@@ -39,12 +40,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEdt" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/confirmPasswordEdt"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:autofillHints="password"
         android:hint="@string/prompt_confirm_password"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -54,21 +54,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEdt" />
 
-    <Button
-        android:id="@+id/loginBtn"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/registerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
         android:enabled="false"
         android:text="@string/action_register"
+        android:textColor="@color/white"
+        android:background="@drawable/button"
         app:layout_constraintBottom_toTopOf="@+id/loginTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEdt"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEdt"
         app:layout_constraintVertical_bias="0.15" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/loginTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

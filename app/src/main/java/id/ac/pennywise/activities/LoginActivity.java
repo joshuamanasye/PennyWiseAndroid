@@ -1,17 +1,21 @@
-package id.ac.pennywise;
+package id.ac.pennywise.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import id.ac.pennywise.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -21,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         String fullText = "Don't have an account? Register";
         SpannableString spannableString = new SpannableString(fullText);
 
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.green_teal, getTheme()));
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(LoginActivity.this, R.color.green_teal));
         spannableString.setSpan(colorSpan, fullText.indexOf("Register"), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         registerLink.setText(spannableString);
@@ -47,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setRegisterLink();
 
+        Button loginBtn = findViewById(R.id.loginBtn);
 
     }
 }

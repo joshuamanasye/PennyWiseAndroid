@@ -4,9 +4,11 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:navigationBarColor">@color/grey1</item>
+        <item name="colorAccent">@color/green_teal</item>
     </style>
 
     <style name="Theme.PennyWise" parent="Base.Theme.PennyWise" >
         <item name="android:navigationBarColor">@color/grey1</item>
+        <item name="colorAccent">@color/green_teal</item>
     </style>
 </resources>

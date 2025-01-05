@@ -1,4 +1,4 @@
-package id.ac.pennywise;
+package id.ac.pennywise.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,26 +9,28 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import id.ac.pennywise.R;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private void setLoginLink() {
-        TextView registerLink = findViewById(R.id.loginTxt);
+        TextView loginLink = findViewById(R.id.loginTxt);
 
         String fullText = "Already an account? Login";
         SpannableString spannableString = new SpannableString(fullText);
 
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.green_teal, getTheme()));
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(RegisterActivity.this, R.color.green_teal));
         spannableString.setSpan(colorSpan, fullText.indexOf("Login"), fullText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        registerLink.setText(spannableString);
+        loginLink.setText(spannableString);
 
-        registerLink.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterActivity.this, RegisterActivity.class);
+        loginLink.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
 
             finish();
@@ -40,13 +42,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.registerBtn), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
         setLoginLink();
-
     }
 }
