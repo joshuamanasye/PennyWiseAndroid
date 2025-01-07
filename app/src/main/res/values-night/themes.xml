@@ -5,5 +5,8 @@
          <item name="colorPrimary">@color/grey1</item>
         <item name="android:navigationBarColor">@color/grey1</item>
         <item name="colorAccent">@color/green_teal</item>
+        <item name="colorControlActivated">@color/green_teal</item>
+        <item name="colorControlNormal">@color/green_teal</item>
+
     </style>
 </resources>

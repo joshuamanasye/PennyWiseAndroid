@@ -1,62 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:orientation="vertical"
+    android:background="@color/grey1"
     tools:context=".activities.AddTransactionActivity">
 
+    <ImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/back"
+        android:src="@drawable/caret_left_fill"
+        android:background="@android:color/transparent"
+        tools:ignore="ImageContrastCheck" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/amountEdt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:hint="Enter amount"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_grey"
         android:inputType="numberDecimal"
-        android:minHeight="48dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:textSize="48sp" />
 
     <RadioGroup
         android:id="@+id/typeRg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/amountEdt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_marginTop="18dp"
+        android:buttonTint="@color/green_teal"
+        android:orientation="horizontal">
 
-        <RadioButton
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/expenseRb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:buttonTint="@color/green_teal"
             android:checked="true"
-            android:text="Expense" />
+            android:text="@string/expense"/>
 
-        <RadioButton
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/incomeRb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Income" />
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:buttonTint="@color/green_teal"
+            android:text="@string/income" />
     </RadioGroup>
 
-    <Spinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/categorySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/typeRg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:minHeight="48dp"
+        android:layout_marginTop="18dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/descriptionEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_marginTop="18dp"
+        android:inputType="textMultiLine"
+        android:textSize="16sp"
+        android:hint="Description"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_grey"/>
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addTransactionBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Transaction"
-        app:layout_constraintTop_toBottomOf="@id/categorySpinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="64dp"
+        android:text="@string/add_transaction"
+        android:background="@drawable/button"
+        android:textColor="@color/white" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

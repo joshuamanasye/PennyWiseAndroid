@@ -1,23 +1,32 @@
 package id.ac.pennywise.repositories;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import id.ac.pennywise.models.CategoryModel;
 import id.ac.pennywise.models.TransactionModel;
 import id.ac.pennywise.utils.DatabaseHelper;
 
 public class TransactionRepository {
-    public final DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
 
     public TransactionRepository(Context context) {
         dbHelper = DatabaseHelper.getInstance(context);
     }
 
+    /**
+     * Fetch a transaction by its ID
+     *
+     * @param transactionId The ID of the transaction
+     * @return TransactionModel object
+     */
     public TransactionModel getTransactionById(String transactionId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         TransactionModel transaction = null;
@@ -38,6 +47,54 @@ public class TransactionRepository {
         return transaction;
     }
 
+    /**
+     * Add a new transaction to the database
+     *
+     * @param transaction The transaction to insert
+     */
+    public void addTransaction(TransactionModel transaction) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("category_name", transaction.getCategory().getName());
+        values.put("amount", transaction.getAmount());
+        values.put("description", transaction.getDescription());
+        values.put("date", transaction.getDate().format(DateTimeFormatter.ISO_DATE));
+
+        db.insert(DatabaseHelper.TABLE_TRANSACTIONS, null, values);
+        db.close();
+    }
+
+    /**
+     * Fetch all transactions from the database
+     *
+     * @return List of TransactionModel objects
+     */
+    public List<TransactionModel> getAllTransactions() {
+        List<TransactionModel> transactions = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT t.id, t.category_name, t.amount, t.description, t.date, c.income " +
+                "FROM transactions t " +
+                "JOIN categories c ON t.category_name = c.category_name";
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            transactions.add(createTransactionFromCursor(cursor));
+        }
+
+        cursor.close();
+        db.close();
+
+        return transactions;
+    }
+
+    /**
+     * Helper method to create a TransactionModel object from a database Cursor
+     *
+     * @param cursor The Cursor object pointing to the current row
+     * @return TransactionModel object
+     */
     private TransactionModel createTransactionFromCursor(Cursor cursor) {
         String id = cursor.getString(cursor.getColumnIndexOrThrow("id"));
         String categoryName = cursor.getString(cursor.getColumnIndexOrThrow("category_name"));
@@ -53,5 +110,4 @@ public class TransactionRepository {
         CategoryModel category = new CategoryModel(categoryName, isIncome);
         return new TransactionModel(id, category, amount, description, date);
     }
-
 }

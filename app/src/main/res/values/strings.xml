@@ -18,4 +18,7 @@
     <string name="budgets">Budgets</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="back">back</string>
 </resources>

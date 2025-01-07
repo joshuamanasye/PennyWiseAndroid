@@ -65,7 +65,7 @@ public class TransactionAdapter extends BaseAdapter {
         }
         else {
             amountTxt.setTextColor(ContextCompat.getColor(context, R.color.red));
-            amountStr = "+";
+            amountStr = "-";
         }
         amountStr += String.valueOf(current.getAmount());
         amountTxt.setText(amountStr);

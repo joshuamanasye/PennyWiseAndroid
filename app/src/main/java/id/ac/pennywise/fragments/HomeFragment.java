@@ -24,7 +24,7 @@ import id.ac.pennywise.utils.adapters.TransactionAdapter;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-
+    ListView transactionLv;
     private HomeController homeController;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -79,9 +79,9 @@ public class HomeFragment extends Fragment {
 
         homeController = new HomeController(requireContext());
 
-        ListView transactionLv = view.findViewById(R.id.transactionLv);
-
+        transactionLv = view.findViewById(R.id.transactionLv);
         List<TransactionModel> transactionList = homeController.getAllTransactions();
+
         loadList(transactionLv, transactionList);
 
         transactionLv.setOnItemClickListener((parent, view1, position, id) -> {
@@ -93,5 +93,14 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        List<TransactionModel> transactionList = homeController.getAllTransactions();
+
+        loadList(transactionLv, transactionList);
     }
 }

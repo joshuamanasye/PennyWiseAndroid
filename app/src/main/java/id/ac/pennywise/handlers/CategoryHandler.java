@@ -17,13 +17,13 @@ public class CategoryHandler {
         String[] incomeCategories = {"Salary", "Pocket Money"};
 
         for (String category : expenseCategories) {
-            if (!repository.isExists(category)) {
+            if (repository.notExists(category)) {
                 repository.insertCategory(CategoryFactory.createCategory(category, false));
             }
         }
 
         for (String category : incomeCategories) {
-            if (!repository.isExists(category)) {
+            if (repository.notExists(category)) {
                 repository.insertCategory(CategoryFactory.createCategory(category, true));
             }
         }

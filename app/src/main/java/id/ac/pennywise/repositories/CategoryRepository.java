@@ -41,7 +41,7 @@ public class CategoryRepository {
         return categories;
     }
 
-    public boolean isExists(String name) {
+    public boolean notExists(String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_CATEGORIES,
                 null,
@@ -55,6 +55,6 @@ public class CategoryRepository {
         boolean exists = cursor.getCount() > 0;
         cursor.close();
 
-        return exists;
+        return !exists;
     }
 }

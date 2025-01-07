@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="52dp"
     android:orientation="horizontal">
     
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:orientation="vertical">
 
         <TextView
@@ -21,7 +21,8 @@
             android:id="@+id/dateTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30 December 2024"/>
+            android:text="30 December 2024"
+            android:textSize="14dp" />
 
     </LinearLayout>
 
@@ -32,6 +33,6 @@
         android:layout_weight="3"
         android:gravity="center_vertical|end"
         android:textSize="18sp"
-        android:text="+ Rp1,000.00"/>
+        android:text="+ Rp100,000,000.00"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

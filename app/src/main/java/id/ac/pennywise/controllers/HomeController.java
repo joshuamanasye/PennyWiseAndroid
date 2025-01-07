@@ -15,6 +15,6 @@ public class HomeController {
     }
 
     public List<TransactionModel> getAllTransactions() {
-        return transactionHandler.getAllTransaction();
+        return transactionHandler.getAllTransactions();
     }
 }
