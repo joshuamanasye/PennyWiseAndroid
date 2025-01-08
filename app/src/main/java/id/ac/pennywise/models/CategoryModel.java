@@ -16,4 +16,12 @@ public class CategoryModel {
     public boolean isIncome() {
         return isIncome;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIncome(boolean income) {
+        isIncome = income;
+    }
 }

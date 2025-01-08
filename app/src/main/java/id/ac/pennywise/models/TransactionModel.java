@@ -37,4 +37,20 @@ public class TransactionModel {
     public LocalDate getDate() {
         return date;
     }
+
+    public void setCategory(CategoryModel category) {
+        this.category = category;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }

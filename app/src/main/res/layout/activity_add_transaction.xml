@@ -80,13 +80,13 @@
         android:textColor="@color/white"
         android:textColorHint="@color/light_grey"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/addTransactionBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:text="@string/add_transaction"
-        android:background="@drawable/button"
+        android:backgroundTint="@color/green_teal"
         android:textColor="@color/white" />
 
 </LinearLayout>

@@ -1,32 +1,118 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/grey2">
 
-    <TextView
-        android:id="@+id/categoryTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp" />
+    <ImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/back"
+        android:src="@drawable/caret_left_fill"
+        android:background="@android:color/transparent" />
 
-    <TextView
-        android:id="@+id/amountTxt"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/amountEdt"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minHeight="48dp"
+        android:hint="Amount"
+        android:inputType="numberDecimal"
         android:textSize="18sp" />
 
+    <RadioGroup
+        android:id="@+id/typeRg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:buttonTint="@color/green_teal"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/expenseRb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:buttonTint="@color/green_teal"
+            android:checked="true"
+            android:text="@string/expense"/>
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/incomeRb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:buttonTint="@color/green_teal"
+            android:text="@string/income" />
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minHeight="48dp" />
+
     <TextView
+        android:drawablePadding="4dp"
+        android:minHeight="48dp"
         android:id="@+id/dateTxt"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="10dp"
+        android:hint="Select Date"
+        android:background="@android:color/transparent"
+        android:textSize="16sp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        app:drawableLeftCompat="@drawable/calendar_event_fill" />
+
+    <EditText
+        android:id="@+id/descriptionEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Description"
+        android:inputType="textMultiLine"
+        android:lines="3"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/descriptionTxt"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:orientation="horizontal" >
 
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete"
+            android:backgroundTint="@color/red"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/editBtn"
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Edit"
+            android:backgroundTint="@color/medium_slate_blue"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
 </LinearLayout>
