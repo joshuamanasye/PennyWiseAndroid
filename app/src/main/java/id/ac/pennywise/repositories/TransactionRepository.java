@@ -21,12 +21,6 @@ public class TransactionRepository {
         dbHelper = DatabaseHelper.getInstance(context);
     }
 
-    /**
-     * Fetch a transaction by its ID
-     *
-     * @param transactionId The ID of the transaction
-     * @return TransactionModel object
-     */
     public TransactionModel getTransactionById(String transactionId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         TransactionModel transaction = null;
@@ -47,11 +41,6 @@ public class TransactionRepository {
         return transaction;
     }
 
-    /**
-     * Add a new transaction to the database
-     *
-     * @param transaction The transaction to insert
-     */
     public void addTransaction(TransactionModel transaction) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -65,11 +54,6 @@ public class TransactionRepository {
         db.close();
     }
 
-    /**
-     * Fetch all transactions from the database
-     *
-     * @return List of TransactionModel objects
-     */
     public List<TransactionModel> getAllTransactions() {
         List<TransactionModel> transactions = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -89,12 +73,6 @@ public class TransactionRepository {
         return transactions;
     }
 
-    /**
-     * Helper method to create a TransactionModel object from a database Cursor
-     *
-     * @param cursor The Cursor object pointing to the current row
-     * @return TransactionModel object
-     */
     private TransactionModel createTransactionFromCursor(Cursor cursor) {
         String id = cursor.getString(cursor.getColumnIndexOrThrow("id"));
         String categoryName = cursor.getString(cursor.getColumnIndexOrThrow("category_name"));
@@ -102,12 +80,32 @@ public class TransactionRepository {
         double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
         String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
 
-        // Parse the date into LocalDate
         String dateString = cursor.getString(cursor.getColumnIndexOrThrow("date"));
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
 
-        // Create the CategoryModel and TransactionModel
         CategoryModel category = new CategoryModel(categoryName, isIncome);
         return new TransactionModel(id, category, amount, description, date);
+    }
+
+    public boolean updateTransaction(TransactionModel transaction) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("category_name", transaction.getCategory().getName());
+        values.put("amount", transaction.getAmount());
+        values.put("description", transaction.getDescription());
+        values.put("date", transaction.getDate().format(DateTimeFormatter.ISO_DATE));
+
+        int rowsUpdated = db.update(DatabaseHelper.TABLE_TRANSACTIONS, values, "id = ?", new String[]{transaction.getId()});
+        db.close();
+
+        return rowsUpdated > 0;
+    }
+
+    public boolean deleteTransaction(String transactionId) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int rowsDeleted = db.delete(DatabaseHelper.TABLE_TRANSACTIONS, "id = ?", new String[]{transactionId});
+        db.close();
+        return rowsDeleted > 0;
     }
 }

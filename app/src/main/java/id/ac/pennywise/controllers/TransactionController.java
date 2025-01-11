@@ -11,8 +11,6 @@ import id.ac.pennywise.factories.TransactionFactory;
 import id.ac.pennywise.handlers.TransactionHandler;
 import id.ac.pennywise.models.CategoryModel;
 import id.ac.pennywise.models.TransactionModel;
-import id.ac.pennywise.repositories.CategoryRepository;
-import id.ac.pennywise.repositories.TransactionRepository;
 
 public class TransactionController {
     private final TransactionHandler handler;
@@ -38,4 +36,18 @@ public class TransactionController {
         TransactionModel transaction = TransactionFactory.createTransaction(category, amount, description, LocalDate.now());
         handler.addTransaction(transaction);
     }
+
+    public boolean updateTransaction(TransactionModel transaction) {
+        return handler.updateTransaction(transaction);
+    }
+
+    public int getCategoryPosition(String categoryName, boolean isIncome) {
+        List<String> categories = getCategoriesByType(isIncome);
+        return categories.indexOf(categoryName);
+    }
+
+    public boolean deleteTransaction(String transactionId) {
+        return handler.deleteTransaction(transactionId);
+    }
+
 }

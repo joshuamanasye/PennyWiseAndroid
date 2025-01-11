@@ -1,6 +1,7 @@
 package id.ac.pennywise.handlers;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
 
@@ -32,5 +33,13 @@ public class TransactionHandler {
 
     public List<TransactionModel> getAllTransactions() {
         return transactionRepository.getAllTransactions();
+    }
+
+    public boolean updateTransaction(TransactionModel transaction) {
+        return transactionRepository.updateTransaction(transaction);
+    }
+
+    public boolean deleteTransaction(String transactionId) {
+        return transactionRepository.deleteTransaction(transactionId);
     }
 }

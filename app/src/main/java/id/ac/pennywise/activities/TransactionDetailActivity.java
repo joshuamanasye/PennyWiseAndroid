@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -16,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 
 import id.ac.pennywise.R;
@@ -28,9 +28,9 @@ public class TransactionDetailActivity extends AppCompatActivity {
     private EditText amountEdt, descriptionEdt;
     private Spinner categorySpinner;
     private TextView dateTxt;
-    private Button editBtn;
     private RadioGroup typeRg;
     private RadioButton expenseRb, incomeRb;
+    private Button editBtn, deleteBtn;
 
     private TransactionController controller;
     private TransactionModel transaction;
@@ -41,15 +41,15 @@ public class TransactionDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_detail);
 
-        // Initialize views
         amountEdt = findViewById(R.id.amountEdt);
         categorySpinner = findViewById(R.id.categorySpinner);
         dateTxt = findViewById(R.id.dateTxt);
         descriptionEdt = findViewById(R.id.descriptionEdt);
-        editBtn = findViewById(R.id.editBtn);
         typeRg = findViewById(R.id.typeRg);
         expenseRb = findViewById(R.id.expenseRb);
         incomeRb = findViewById(R.id.incomeRb);
+        editBtn = findViewById(R.id.editBtn);
+        deleteBtn = findViewById(R.id.deleteBtn);
 
         ImageButton backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(v -> finish());
@@ -61,54 +61,62 @@ public class TransactionDetailActivity extends AppCompatActivity {
             transaction = controller.getTransactionById(transactionId);
 
             if (transaction != null) {
-                // Populate fields with transaction details
-                amountEdt.setText(String.valueOf(transaction.getAmount()));
-                dateTxt.setText(transaction.getDate().toString());
-                descriptionEdt.setText(transaction.getDescription());
-
-                if (transaction.getCategory().isIncome()) {
-                    incomeRb.setChecked(true);
-                    populateCategorySpinner(getIncomeCategories());
-                } else {
-                    expenseRb.setChecked(true);
-                    populateCategorySpinner(getExpenseCategories());
-                }
-
-                categorySpinner.setSelection(getCategoryPosition(transaction.getCategory().getName()));
+                populateFields();
             }
         }
 
-        // Set a DatePickerDialog for the date field
         dateTxt.setOnClickListener(v -> showDatePicker());
 
-        // Update category list when the transaction type is changed
-        typeRg.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.incomeRb) {
-                populateCategorySpinner(getIncomeCategories());
-            } else {
-                populateCategorySpinner(getExpenseCategories());
-            }
-        });
+        typeRg.setOnCheckedChangeListener((group, checkedId) -> updateCategorySpinner());
 
-        // Handle edit button click
         editBtn.setOnClickListener(v -> updateTransaction());
+        deleteBtn.setOnClickListener(v -> deleteTransaction());
+    }
+
+    private void populateFields() {
+        amountEdt.setText(String.valueOf(transaction.getAmount()));
+        dateTxt.setText(transaction.getDate().toString());
+        descriptionEdt.setText(transaction.getDescription());
+
+        if (transaction.getCategory().isIncome()) {
+            incomeRb.setChecked(true);
+        } else {
+            expenseRb.setChecked(true);
+        }
+
+        updateCategorySpinner();
+        categorySpinner.setSelection(controller.getCategoryPosition(transaction.getCategory().getName(), incomeRb.isChecked()));
     }
 
     private void showDatePicker() {
-        LocalDate currentDate = LocalDate.parse(dateTxt.getText().toString(), DateTimeFormatter.ISO_DATE);
+        LocalDate selectedDate;
+        try {
+            selectedDate = LocalDate.parse(dateTxt.getText(), DateTimeFormatter.ISO_DATE);
+        } catch (Exception e) {
+            Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         DatePickerDialog datePicker = new DatePickerDialog(
                 this,
+                R.style.CustomDatePickerDialogTheme,
                 (view, year, month, dayOfMonth) -> {
-                    LocalDate selectedDate = LocalDate.of(year, month + 1, dayOfMonth);
-                    dateTxt.setText(selectedDate.toString());
+                    String dateStr = String.format(getString(R.string.d_02d_02d), year, month + 1, dayOfMonth);
+                    dateTxt.setText(dateStr);
                 },
-                currentDate.getYear(),
-                currentDate.getMonthValue() - 1,
-                currentDate.getDayOfMonth()
+                selectedDate.getYear(),
+                selectedDate.getMonthValue() - 1,
+                selectedDate.getDayOfMonth()
         );
 
         datePicker.show();
+    }
+
+    private void updateCategorySpinner() {
+        List<String> categories = controller.getCategoriesByType(incomeRb.isChecked());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
     }
 
     private void updateTransaction() {
@@ -139,36 +147,32 @@ public class TransactionDetailActivity extends AppCompatActivity {
             return;
         }
 
-        // Update the transaction object
         transaction.getCategory().setIncome(isIncome);
         transaction.getCategory().setName(category);
         transaction.setAmount(amount);
         transaction.setDescription(description);
         transaction.setDate(date);
 
-        // Update in the database TODO
-//        controller.updateTransaction(transaction);
-
-        Toast.makeText(this, "Transaction updated successfully", Toast.LENGTH_SHORT).show();
-        finish();
+        if (controller.updateTransaction(transaction)) {
+            Toast.makeText(this, "Transaction updated successfully", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, "Failed to update transaction", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void populateCategorySpinner(List<String> categories) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(adapter);
+    private void deleteTransaction() {
+        if (transaction != null && transaction.getId() != null) {
+            boolean isDeleted = controller.deleteTransaction(transaction.getId());
+            if (isDeleted) {
+                Toast.makeText(this, "Transaction deleted successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(this, "Failed to delete transaction", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Transaction not found", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private List<String> getIncomeCategories() {
-        return Arrays.asList("Salary", "Bonus", "Investments", "Others");
-    }
-
-    private List<String> getExpenseCategories() {
-        return Arrays.asList("Food", "Transport", "Shopping", "Bills");
-    }
-
-    private int getCategoryPosition(String categoryName) {
-        List<String> categories = incomeRb.isChecked() ? getIncomeCategories() : getExpenseCategories();
-        return categories.indexOf(categoryName);
-    }
 }
