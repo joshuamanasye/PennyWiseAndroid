@@ -11,6 +11,7 @@ import id.ac.pennywise.factories.TransactionFactory;
 import id.ac.pennywise.handlers.TransactionHandler;
 import id.ac.pennywise.models.CategoryModel;
 import id.ac.pennywise.models.TransactionModel;
+import id.ac.pennywise.utils.PreferenceManager;
 
 public class TransactionController {
     private final TransactionHandler handler;
@@ -21,6 +22,10 @@ public class TransactionController {
 
     public TransactionModel getTransactionById(String transactionId) {
         return handler.getTransactionById(transactionId);
+    }
+
+    public List<TransactionModel> getAllTransactions() {
+        return handler.getAllTransactions();
     }
 
     public List<String> getCategoriesByType(boolean isIncome) {
@@ -35,10 +40,14 @@ public class TransactionController {
         CategoryModel category = CategoryFactory.createCategory(categoryName, isIncome);
         TransactionModel transaction = TransactionFactory.createTransaction(category, amount, description, LocalDate.now());
         handler.addTransaction(transaction);
+
+        // TODO insert firebase
     }
 
     public boolean updateTransaction(TransactionModel transaction) {
         return handler.updateTransaction(transaction);
+
+        // TODO update firebase
     }
 
     public int getCategoryPosition(String categoryName, boolean isIncome) {
@@ -48,6 +57,12 @@ public class TransactionController {
 
     public boolean deleteTransaction(String transactionId) {
         return handler.deleteTransaction(transactionId);
+    }
+
+    public void addBalance(Context context, double amount) {
+        PreferenceManager.setUserBalance(context, PreferenceManager.getUserBalance(context) + amount);
+
+        // TODO update balance firebase
     }
 
 }

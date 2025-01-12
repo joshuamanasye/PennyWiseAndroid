@@ -7,7 +7,7 @@ import id.ac.pennywise.models.TransactionModel;
 
 public class TransactionFactory {
     public static TransactionModel createTransaction(CategoryModel category, double amount, String description, LocalDate date) {
-        String id = String.valueOf(System.currentTimeMillis()); // Example ID generation based on timestamp
+        String id = String.valueOf(System.currentTimeMillis());
         return new TransactionModel(id, category, amount, description, date);
     }
 }

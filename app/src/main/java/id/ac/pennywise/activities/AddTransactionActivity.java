@@ -68,6 +68,9 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         transactionController.insertTransaction(selectedCategory, amount, isIncome, description);
 
+        if (!isIncome) { amount *= -1; }
+        transactionController.addBalance(this, amount);
+
         Toast.makeText(this, "Transaction added!", Toast.LENGTH_SHORT).show();
         finish();
     }

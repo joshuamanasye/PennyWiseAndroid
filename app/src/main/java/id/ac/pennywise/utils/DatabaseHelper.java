@@ -13,26 +13,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_TRANSACTIONS = "transactions";
     public static final String TABLE_BUDGETS = "budgets";
 
-    // create table queries
+    // categories column
+    public static final String COLUMN_CATEGORY_NAME = "category_name";
+    public static final String COLUMN_INCOME = "income";
+
+    // transactions column
+    public static final String COLUMN_TRANSACTION_ID = "id";
+    public static final String COLUMN_TRANSACTION_CATEGORY_NAME = "category_name";
+    public static final String COLUMN_AMOUNT = "amount";
+    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_DATE = "date";
+
+    // budgets column
+    public static final String COLUMN_BUDGET_CATEGORY_NAME = "category_name";
+    public static final String COLUMN_BUDGET_AMOUNT = "amount";
+
+    // table queries
     private static final String CREATE_TABLE_CATEGORIES =
             "CREATE TABLE " + TABLE_CATEGORIES + " (" +
-                    "category_name TEXT PRIMARY KEY, " +
-                    "income BOOLEAN NOT NULL)";
+                    COLUMN_CATEGORY_NAME + " TEXT PRIMARY KEY, " +
+                    COLUMN_INCOME + " BOOLEAN NOT NULL)";
+
     private static final String CREATE_TABLE_TRANSACTIONS =
             "CREATE TABLE " + TABLE_TRANSACTIONS + " (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "category_name TEXT NOT NULL, " +
-                    "amount REAL NOT NULL, " +
-                    "description TEXT, " +
-                    "date DATE NOT NULL, " +
-                    "FOREIGN KEY (category_name) REFERENCES " + TABLE_CATEGORIES + "(category_name))";
+                    COLUMN_TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TRANSACTION_CATEGORY_NAME + " TEXT NOT NULL, " +
+                    COLUMN_AMOUNT + " REAL NOT NULL, " +
+                    COLUMN_DESCRIPTION + " TEXT, " +
+                    COLUMN_DATE + " DATE NOT NULL, " +
+                    "FOREIGN KEY (" + COLUMN_TRANSACTION_CATEGORY_NAME + ") REFERENCES " +
+                    TABLE_CATEGORIES + "(" + COLUMN_CATEGORY_NAME + "))";
 
     private static final String CREATE_TABLE_BUDGETS =
             "CREATE TABLE " + TABLE_BUDGETS + " (" +
-                    "category_name TEXT NOT NULL, " +
-                    "amount REAL NOT NULL, " +
-                    "FOREIGN KEY (category_name) REFERENCES " + TABLE_CATEGORIES + "(category_name))";
-
+                    COLUMN_BUDGET_CATEGORY_NAME + " TEXT NOT NULL, " +
+                    COLUMN_BUDGET_AMOUNT + " REAL NOT NULL, " +
+                    "FOREIGN KEY (" + COLUMN_BUDGET_CATEGORY_NAME + ") REFERENCES " +
+                    TABLE_CATEGORIES + "(" + COLUMN_CATEGORY_NAME + "))";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,10 +60,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] incomeCategories = {"Salary", "Pocket Money"};
 
         for (String category : expenseCategories) {
-            db.execSQL("INSERT INTO " + TABLE_CATEGORIES + " (category_name, income) VALUES ('" + category + "', 0)");
+            db.execSQL("INSERT INTO " + TABLE_CATEGORIES + " (" +
+                    COLUMN_CATEGORY_NAME + ", " + COLUMN_INCOME + ") VALUES ('" + category + "', 0)");
         }
         for (String category : incomeCategories) {
-            db.execSQL("INSERT INTO " + TABLE_CATEGORIES + " (category_name, income) VALUES ('" + category + "', 1)");
+            db.execSQL("INSERT INTO " + TABLE_CATEGORIES + " (" +
+                    COLUMN_CATEGORY_NAME + ", " + COLUMN_INCOME + ") VALUES ('" + category + "', 1)");
         }
     }
 
@@ -56,10 +75,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_TRANSACTIONS);
         db.execSQL(CREATE_TABLE_BUDGETS);
 
-        // insert default categories
         insertDefaultCategories(db);
     }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -78,5 +95,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return instance;
     }
-
 }

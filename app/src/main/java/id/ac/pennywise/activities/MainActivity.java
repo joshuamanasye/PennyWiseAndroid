@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import id.ac.pennywise.R;
 import id.ac.pennywise.controllers.MainController;
 import id.ac.pennywise.fragments.HomeFragment;
-import id.ac.pennywise.utils.SessionManager;
+import id.ac.pennywise.utils.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(getResources().getColor(R.color.grey1, getTheme()));
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
-        // tes user
-//        SessionManager.saveUserSession(MainActivity.this, "u9xlmpCBWqaiLc5TaggS7fbyXyF3");
-//        SessionManager.clearUserSession(MainActivity.this);
+        // tes
+//        PreferenceManager.saveUserSession(MainActivity.this, "u9xlmpCBWqaiLc5TaggS7fbyXyF3");
+//        PreferenceManager.clearUserSession(MainActivity.this);
+//        PreferenceManager.setUserBalance(this, 0);
 
         controller = new MainController();
 
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == MainController.LOGIN_REQUEST_CODE && resultCode == RESULT_OK) {
             // user logged in, fetch the session again
-            userId = SessionManager.getUserSession(this);
+            userId = PreferenceManager.getUserSession(this);
         } else {
             // user cancels login
             finish();

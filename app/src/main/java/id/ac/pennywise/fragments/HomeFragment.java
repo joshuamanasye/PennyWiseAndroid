@@ -9,13 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 
 import id.ac.pennywise.R;
 import id.ac.pennywise.activities.TransactionDetailActivity;
-import id.ac.pennywise.controllers.HomeController;
+import id.ac.pennywise.controllers.TransactionController;
 import id.ac.pennywise.models.TransactionModel;
+import id.ac.pennywise.utils.PreferenceManager;
 import id.ac.pennywise.utils.adapters.TransactionAdapter;
 
 /**
@@ -25,7 +29,11 @@ import id.ac.pennywise.utils.adapters.TransactionAdapter;
  */
 public class HomeFragment extends Fragment {
     ListView transactionLv;
-    private HomeController homeController;
+    private TextView balanceTxt;
+
+    private List<TransactionModel> transactionList;
+    private TransactionController transactionController;
+    private TransactionAdapter transactionAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,22 +75,21 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void loadList(ListView transactionLv, List<TransactionModel> transactionList) {
-        TransactionAdapter transactionAdapter = new TransactionAdapter(requireContext(), transactionList);
-        transactionLv.setAdapter(transactionAdapter);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        homeController = new HomeController(requireContext());
-
+        transactionController = new TransactionController(requireContext());
         transactionLv = view.findViewById(R.id.transactionLv);
-        List<TransactionModel> transactionList = homeController.getAllTransactions();
 
-        loadList(transactionLv, transactionList);
+        balanceTxt = view.findViewById(R.id.balanceTxt);
+
+        setBalance();
+
+        transactionList = transactionController.getAllTransactions();
+        transactionAdapter = new TransactionAdapter(requireContext(), transactionList);
+        transactionLv.setAdapter(transactionAdapter);
 
         transactionLv.setOnItemClickListener((parent, view1, position, id) -> {
             TransactionModel clickedTransaction = transactionList.get(position);
@@ -99,8 +106,17 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        List<TransactionModel> transactionList = homeController.getAllTransactions();
+        transactionList.clear();
+        transactionList.addAll(transactionController.getAllTransactions());
+        transactionAdapter.notifyDataSetChanged();
 
-        loadList(transactionLv, transactionList);
+        setBalance();
+    }
+
+    private void setBalance() {
+        String amountFormat = "Rp%,.2f";
+        String balanceStr = String.format(Locale.UK, amountFormat, PreferenceManager.getUserBalance(requireContext()));
+
+        balanceTxt.setText(balanceStr);
     }
 }

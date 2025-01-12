@@ -1,6 +1,7 @@
 package id.ac.pennywise.activities;
 
 import android.app.DatePickerDialog;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -36,10 +38,21 @@ public class TransactionDetailActivity extends AppCompatActivity {
     private TransactionModel transaction;
     private String transactionId;
 
+    private void setRadioColor() {
+        RadioButton expenseRb = findViewById(R.id.expenseRb);
+        RadioButton incomeRb = findViewById(R.id.incomeRb);
+
+        ColorStateList colorStateList = ContextCompat.getColorStateList(this, R.color.green_teal);
+        expenseRb.setButtonTintList(colorStateList);
+        incomeRb.setButtonTintList(colorStateList);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_detail);
+
+        setRadioColor();
 
         amountEdt = findViewById(R.id.amountEdt);
         categorySpinner = findViewById(R.id.categorySpinner);
@@ -126,8 +139,8 @@ public class TransactionDetailActivity extends AppCompatActivity {
         String category = categorySpinner.getSelectedItem().toString();
         boolean isIncome = incomeRb.isChecked();
 
-        if (amountStr.isEmpty() || description.isEmpty() || dateStr.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        if (amountStr.isEmpty()) {
+            Toast.makeText(this, "Please enter valid amount", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -147,6 +160,9 @@ public class TransactionDetailActivity extends AppCompatActivity {
             return;
         }
 
+        boolean oldIsIncome = transaction.getCategory().isIncome();
+        double oldAmount = transaction.getAmount();
+
         transaction.getCategory().setIncome(isIncome);
         transaction.getCategory().setName(category);
         transaction.setAmount(amount);
@@ -154,6 +170,12 @@ public class TransactionDetailActivity extends AppCompatActivity {
         transaction.setDate(date);
 
         if (controller.updateTransaction(transaction)) {
+            if (!oldIsIncome) { oldAmount *= -1; }
+            controller.addBalance(this, -oldAmount);
+
+            if (!transaction.getCategory().isIncome()) { amount *= -1; }
+            controller.addBalance(this, amount);
+
             Toast.makeText(this, "Transaction updated successfully", Toast.LENGTH_SHORT).show();
             finish();
         } else {
@@ -163,9 +185,16 @@ public class TransactionDetailActivity extends AppCompatActivity {
 
     private void deleteTransaction() {
         if (transaction != null && transaction.getId() != null) {
+            boolean isIncome = transaction.getCategory().isIncome();
+            double amount = transaction.getAmount();
+
             boolean isDeleted = controller.deleteTransaction(transaction.getId());
             if (isDeleted) {
                 Toast.makeText(this, "Transaction deleted successfully", Toast.LENGTH_SHORT).show();
+
+                if (!isIncome) { amount *= -1; }
+                controller.addBalance(this, -amount);
+
                 finish();
             } else {
                 Toast.makeText(this, "Failed to delete transaction", Toast.LENGTH_SHORT).show();

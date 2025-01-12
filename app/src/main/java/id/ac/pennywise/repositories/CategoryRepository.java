@@ -21,8 +21,8 @@ public class CategoryRepository {
     public void insertCategory(CategoryModel category) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("category_name", category.getName());
-        values.put("income", category.isIncome());
+        values.put(DatabaseHelper.COLUMN_CATEGORY_NAME, category.getName());
+        values.put(DatabaseHelper.COLUMN_INCOME, category.isIncome());
         db.insert(DatabaseHelper.TABLE_CATEGORIES, null, values);
     }
 
@@ -32,8 +32,8 @@ public class CategoryRepository {
         Cursor cursor = db.query(DatabaseHelper.TABLE_CATEGORIES, null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndexOrThrow("category_name"));
-            boolean income = cursor.getInt(cursor.getColumnIndexOrThrow("income")) == 1;
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CATEGORY_NAME));
+            boolean income = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_INCOME)) == 1;
             categories.add(new CategoryModel(name, income));
         }
         cursor.close();
@@ -45,7 +45,7 @@ public class CategoryRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(DatabaseHelper.TABLE_CATEGORIES,
                 null,
-                "category_name = ?",
+                DatabaseHelper.COLUMN_CATEGORY_NAME + " = ?",
                 new String[]{name},
                 null,
                 null,

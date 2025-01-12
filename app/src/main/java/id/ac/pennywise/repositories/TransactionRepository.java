@@ -25,10 +25,13 @@ public class TransactionRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         TransactionModel transaction = null;
 
-        String query = "SELECT t.id, t.category_name, t.amount, t.description, t.date, c.income " +
-                "FROM transactions t " +
-                "JOIN categories c ON t.category_name = c.category_name " +
-                "WHERE t.id = ?";
+        String query = "SELECT t." + DatabaseHelper.COLUMN_TRANSACTION_ID + ", t." + DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME +
+                ", t." + DatabaseHelper.COLUMN_AMOUNT + ", t." + DatabaseHelper.COLUMN_DESCRIPTION +
+                ", t." + DatabaseHelper.COLUMN_DATE + ", c." + DatabaseHelper.COLUMN_INCOME +
+                " FROM " + DatabaseHelper.TABLE_TRANSACTIONS + " t " +
+                "JOIN " + DatabaseHelper.TABLE_CATEGORIES + " c ON t." + DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME +
+                " = c." + DatabaseHelper.COLUMN_CATEGORY_NAME +
+                " WHERE t." + DatabaseHelper.COLUMN_TRANSACTION_ID + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{transactionId});
 
         if (cursor.moveToFirst()) {
@@ -45,10 +48,10 @@ public class TransactionRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("category_name", transaction.getCategory().getName());
-        values.put("amount", transaction.getAmount());
-        values.put("description", transaction.getDescription());
-        values.put("date", transaction.getDate().format(DateTimeFormatter.ISO_DATE));
+        values.put(DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME, transaction.getCategory().getName());
+        values.put(DatabaseHelper.COLUMN_AMOUNT, transaction.getAmount());
+        values.put(DatabaseHelper.COLUMN_DESCRIPTION, transaction.getDescription());
+        values.put(DatabaseHelper.COLUMN_DATE, transaction.getDate().format(DateTimeFormatter.ISO_DATE));
 
         db.insert(DatabaseHelper.TABLE_TRANSACTIONS, null, values);
         db.close();
@@ -58,9 +61,13 @@ public class TransactionRepository {
         List<TransactionModel> transactions = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT t.id, t.category_name, t.amount, t.description, t.date, c.income " +
-                "FROM transactions t " +
-                "JOIN categories c ON t.category_name = c.category_name";
+        String query = "SELECT t." + DatabaseHelper.COLUMN_TRANSACTION_ID + ", t." + DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME +
+                ", t." + DatabaseHelper.COLUMN_AMOUNT + ", t." + DatabaseHelper.COLUMN_DESCRIPTION +
+                ", t." + DatabaseHelper.COLUMN_DATE + ", c." + DatabaseHelper.COLUMN_INCOME +
+                " FROM " + DatabaseHelper.TABLE_TRANSACTIONS + " t " +
+                "JOIN " + DatabaseHelper.TABLE_CATEGORIES + " c ON t." + DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME +
+                " = c." + DatabaseHelper.COLUMN_CATEGORY_NAME +
+                " ORDER BY t." + DatabaseHelper.COLUMN_DATE + " DESC";
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
@@ -74,13 +81,13 @@ public class TransactionRepository {
     }
 
     private TransactionModel createTransactionFromCursor(Cursor cursor) {
-        String id = cursor.getString(cursor.getColumnIndexOrThrow("id"));
-        String categoryName = cursor.getString(cursor.getColumnIndexOrThrow("category_name"));
-        boolean isIncome = cursor.getInt(cursor.getColumnIndexOrThrow("income")) == 1;
-        double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
-        String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+        String id = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_TRANSACTION_ID));
+        String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME));
+        boolean isIncome = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_INCOME)) == 1;
+        double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_AMOUNT));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
 
-        String dateString = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+        String dateString = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DATE));
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
 
         CategoryModel category = new CategoryModel(categoryName, isIncome);
@@ -91,12 +98,14 @@ public class TransactionRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("category_name", transaction.getCategory().getName());
-        values.put("amount", transaction.getAmount());
-        values.put("description", transaction.getDescription());
-        values.put("date", transaction.getDate().format(DateTimeFormatter.ISO_DATE));
+        values.put(DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME, transaction.getCategory().getName());
+        values.put(DatabaseHelper.COLUMN_AMOUNT, transaction.getAmount());
+        values.put(DatabaseHelper.COLUMN_DESCRIPTION, transaction.getDescription());
+        values.put(DatabaseHelper.COLUMN_DATE, transaction.getDate().format(DateTimeFormatter.ISO_DATE));
 
-        int rowsUpdated = db.update(DatabaseHelper.TABLE_TRANSACTIONS, values, "id = ?", new String[]{transaction.getId()});
+        int rowsUpdated = db.update(DatabaseHelper.TABLE_TRANSACTIONS, values,
+                DatabaseHelper.COLUMN_TRANSACTION_ID + " = ?",
+                new String[]{transaction.getId()});
         db.close();
 
         return rowsUpdated > 0;
@@ -104,7 +113,9 @@ public class TransactionRepository {
 
     public boolean deleteTransaction(String transactionId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int rowsDeleted = db.delete(DatabaseHelper.TABLE_TRANSACTIONS, "id = ?", new String[]{transactionId});
+        int rowsDeleted = db.delete(DatabaseHelper.TABLE_TRANSACTIONS,
+                DatabaseHelper.COLUMN_TRANSACTION_ID + " = ?",
+                new String[]{transactionId});
         db.close();
         return rowsDeleted > 0;
     }

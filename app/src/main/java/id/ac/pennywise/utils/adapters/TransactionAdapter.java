@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import id.ac.pennywise.R;
 import id.ac.pennywise.models.TransactionModel;
+import id.ac.pennywise.utils.PreferenceManager;
 
 public class TransactionAdapter extends BaseAdapter {
 
@@ -67,7 +68,9 @@ public class TransactionAdapter extends BaseAdapter {
             amountTxt.setTextColor(ContextCompat.getColor(context, R.color.red));
             amountStr = "-";
         }
-        amountStr += String.valueOf(current.getAmount());
+
+        String amountFormat = "%,.2f";
+        amountStr += String.format(Locale.UK, amountFormat, current.getAmount());
         amountTxt.setText(amountStr);
 
         return convertView;
