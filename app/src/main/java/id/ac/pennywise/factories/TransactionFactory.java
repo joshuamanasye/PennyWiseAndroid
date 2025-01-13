@@ -10,4 +10,8 @@ public class TransactionFactory {
         String id = String.valueOf(System.currentTimeMillis());
         return new TransactionModel(id, category, amount, description, date);
     }
+
+    public static TransactionModel createTransaction(String id, CategoryModel category, double amount, String description, LocalDate date) {
+        return new TransactionModel(id, category, amount, description, date);
+    }
 }

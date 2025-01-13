@@ -65,4 +65,6 @@ public class TransactionController {
         // TODO update balance firebase
     }
 
+    // TODO load from firebase
+
 }
