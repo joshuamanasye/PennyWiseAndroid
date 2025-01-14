@@ -169,7 +169,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
         transaction.setDescription(description);
         transaction.setDate(date);
 
-        if (controller.updateTransaction(transaction)) {
+        if (controller.updateTransaction(transaction, this)) {
             if (!oldIsIncome) { oldAmount *= -1; }
             controller.addBalance(this, -oldAmount);
 
@@ -188,7 +188,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
             boolean isIncome = transaction.getCategory().isIncome();
             double amount = transaction.getAmount();
 
-            boolean isDeleted = controller.deleteTransaction(transaction.getId());
+            boolean isDeleted = controller.deleteTransaction(transaction.getId(), this);
             if (isDeleted) {
                 Toast.makeText(this, "Transaction deleted successfully", Toast.LENGTH_SHORT).show();
 

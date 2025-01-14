@@ -2,6 +2,8 @@ package id.ac.pennywise.models;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TransactionModel {
     private String id;
@@ -9,6 +11,18 @@ public class TransactionModel {
     private double amount;
     private String description;
     private LocalDate date;
+
+    public Map<String, Object> toFirebaseMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("categoryName", category.getName());
+        map.put("amount", amount);
+        map.put("description", description);
+        map.put("date", date.toString());
+        map.put("type", category.isIncome() ? "Income" : "Expense");
+
+        return map;
+    }
 
     public TransactionModel(String id, CategoryModel category, double amount, String description, LocalDate date) {
         this.id = id;

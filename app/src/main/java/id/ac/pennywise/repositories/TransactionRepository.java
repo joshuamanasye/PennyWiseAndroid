@@ -57,6 +57,28 @@ public class TransactionRepository {
         db.close();
     }
 
+    public void addTransactions(List<TransactionModel> transactions) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            for (TransactionModel transaction : transactions) {
+                ContentValues values = new ContentValues();
+                values.put(DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME, transaction.getCategory().getName());
+                values.put(DatabaseHelper.COLUMN_AMOUNT, transaction.getAmount());
+                values.put(DatabaseHelper.COLUMN_DESCRIPTION, transaction.getDescription());
+                values.put(DatabaseHelper.COLUMN_DATE, transaction.getDate().format(DateTimeFormatter.ISO_DATE));
+
+                db.insert(DatabaseHelper.TABLE_TRANSACTIONS, null, values);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
+        db.close();
+    }
+
     public List<TransactionModel> getAllTransactions() {
         List<TransactionModel> transactions = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -78,20 +100,6 @@ public class TransactionRepository {
         db.close();
 
         return transactions;
-    }
-
-    private TransactionModel createTransactionFromCursor(Cursor cursor) {
-        String id = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_TRANSACTION_ID));
-        String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME));
-        boolean isIncome = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_INCOME)) == 1;
-        double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_AMOUNT));
-        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
-
-        String dateString = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DATE));
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
-
-        CategoryModel category = new CategoryModel(categoryName, isIncome);
-        return new TransactionModel(id, category, amount, description, date);
     }
 
     public boolean updateTransaction(TransactionModel transaction) {
@@ -118,5 +126,25 @@ public class TransactionRepository {
                 new String[]{transactionId});
         db.close();
         return rowsDeleted > 0;
+    }
+
+    public void clearAllTransactions() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DatabaseHelper.TABLE_TRANSACTIONS, null, null);
+        db.close();
+    }
+
+    private TransactionModel createTransactionFromCursor(Cursor cursor) {
+        String id = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_TRANSACTION_ID));
+        String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME));
+        boolean isIncome = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_INCOME)) == 1;
+        double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_AMOUNT));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DESCRIPTION));
+
+        String dateString = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DATE));
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
+
+        CategoryModel category = new CategoryModel(categoryName, isIncome);
+        return new TransactionModel(id, category, amount, description, date);
     }
 }

@@ -42,4 +42,16 @@ public class TransactionHandler {
     public boolean deleteTransaction(String transactionId) {
         return transactionRepository.deleteTransaction(transactionId);
     }
+
+    public void clearCategories() {
+        categoryRepository.clearAllCategories();
+    }
+
+    public void clearTransactions() {
+        transactionRepository.clearAllTransactions();
+    }
+
+    public void addCategory(CategoryModel category) {
+        categoryRepository.insertCategory(category);
+    }
 }

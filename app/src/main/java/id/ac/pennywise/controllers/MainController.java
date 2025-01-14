@@ -9,18 +9,22 @@ import id.ac.pennywise.handlers.CategoryHandler;
 import id.ac.pennywise.utils.PreferenceManager;
 
 public class MainController {
-    public static final int LOGIN_REQUEST_CODE = 1; // Code for identifying login activity result
+    public static final int LOGIN_REQUEST_CODE = 1;
 
     public String getUserSession(Activity activity) {
         String userId = PreferenceManager.getUserSession(activity);
 
         if (userId == null) {
+            // redirect to LoginActivity if no session exists
             Intent intent = new Intent(activity, LoginActivity.class);
-            activity.startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+            activity.finish();
         }
 
         return userId;
     }
+
 
     public void insertInitialCategories(Context context) {
         CategoryHandler categoryHandler = new CategoryHandler(context);
@@ -28,3 +32,4 @@ public class MainController {
         categoryHandler.insertInitialCategories();
     }
 }
+

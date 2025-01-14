@@ -66,7 +66,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         boolean isIncome = typeRg.getCheckedRadioButtonId() == R.id.incomeRb;
         String description = descriptionEdt.getText().toString();
 
-        transactionController.insertTransaction(selectedCategory, amount, isIncome, description);
+        transactionController.insertTransaction(selectedCategory, amount, isIncome, description, this);
 
         if (!isIncome) { amount *= -1; }
         transactionController.addBalance(this, amount);

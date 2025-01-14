@@ -17,7 +17,7 @@ public class PreferenceManager {
 
     public static String getUserSession(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getString(KEY_USER_ID, null); // returns null if no user ID is found
+        return prefs.getString(KEY_USER_ID, null);
     }
 
     public static void clearUserSession(Context context) {

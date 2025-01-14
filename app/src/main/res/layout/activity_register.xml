@@ -60,7 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
-        android:enabled="false"
         android:text="@string/action_register"
         android:textColor="@color/white"
         android:background="@drawable/button"

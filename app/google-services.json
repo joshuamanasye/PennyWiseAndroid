@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "282339062328",
+    "firebase_url": "https://penny-wise-7849d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "penny-wise-7849d",
+    "storage_bucket": "penny-wise-7849d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282339062328:android:0176cc9826342603732ccd",
+        "android_client_info": {
+          "package_name": "id.ac.pennywise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282339062328-gl6dosvclrsuv9eecr170qqbqkqu9inr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnowyN5l8U9PZ_I8voOjIR0sciSlFIotc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282339062328-gl6dosvclrsuv9eecr170qqbqkqu9inr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

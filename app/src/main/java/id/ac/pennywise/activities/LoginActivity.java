@@ -6,18 +6,36 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import id.ac.pennywise.R;
+import id.ac.pennywise.controllers.TransactionController;
+import id.ac.pennywise.controllers.UserController;
+import id.ac.pennywise.utils.PreferenceManager;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private EditText emailEdt, passwordEdt;
+    private Button loginBtn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        emailEdt = findViewById(R.id.emailEdt);
+        passwordEdt = findViewById(R.id.passwordEdt);
+        loginBtn = findViewById(R.id.loginBtn);
+
+        setRegisterLink();
+
+        loginBtn.setOnClickListener(v -> loginUser());
+    }
 
     private void setRegisterLink() {
         TextView registerLink = findViewById(R.id.registerTxt);
@@ -33,25 +51,41 @@ public class LoginActivity extends AppCompatActivity {
         registerLink.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
-
             finish();
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.loginBtn), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+    private void loginUser() {
+        String email = emailEdt.getText().toString().trim();
+        String password = passwordEdt.getText().toString().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        UserController userController = new UserController(this);
+        userController.login(email, password, success -> {
+            if (success) {
+                String userId = PreferenceManager.getUserSession(this);
+
+                TransactionController transactionController = new TransactionController(this);
+                transactionController.loadDataFromFirebase(userId, isDataLoaded -> {
+                    if (isDataLoaded) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
+            }
         });
-
-        setRegisterLink();
-
-        Button loginBtn = findViewById(R.id.loginBtn);
-
     }
+
+
+
 }
