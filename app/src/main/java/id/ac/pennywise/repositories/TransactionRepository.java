@@ -48,6 +48,7 @@ public class TransactionRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_TRANSACTION_ID, transaction.getId());
         values.put(DatabaseHelper.COLUMN_TRANSACTION_CATEGORY_NAME, transaction.getCategory().getName());
         values.put(DatabaseHelper.COLUMN_AMOUNT, transaction.getAmount());
         values.put(DatabaseHelper.COLUMN_DESCRIPTION, transaction.getDescription());

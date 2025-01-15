@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PennyWiseDB";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // tables
     public static final String TABLE_CATEGORIES = "categories";
@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_TRANSACTIONS =
             "CREATE TABLE " + TABLE_TRANSACTIONS + " (" +
-                    COLUMN_TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TRANSACTION_ID + " TEXT PRIMARY KEY, " +
                     COLUMN_TRANSACTION_CATEGORY_NAME + " TEXT NOT NULL, " +
                     COLUMN_AMOUNT + " REAL NOT NULL, " +
                     COLUMN_DESCRIPTION + " TEXT, " +

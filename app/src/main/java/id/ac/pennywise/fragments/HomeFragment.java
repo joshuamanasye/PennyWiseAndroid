@@ -8,14 +8,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import id.ac.pennywise.R;
+import id.ac.pennywise.activities.ProfileActivity;
 import id.ac.pennywise.activities.TransactionDetailActivity;
 import id.ac.pennywise.controllers.TransactionController;
 import id.ac.pennywise.models.TransactionModel;
@@ -97,6 +101,14 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), TransactionDetailActivity.class);
             intent.putExtra("transaction_id", clickedTransaction.getId());
             startActivity(intent);
+        });
+
+        ImageButton profileBtn = view.findViewById(R.id.profileBtn);
+        profileBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), ProfileActivity.class);
+            startActivity(intent);
+
+            requireActivity().finish();
         });
 
         return view;

@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == MainController.LOGIN_REQUEST_CODE && resultCode == RESULT_OK) {
             // user logged in, fetch the session again
             userId = PreferenceManager.getUserSession(this);
+
+            // load the transaction from firebase to local database
         } else {
             // user cancels login
             finish();

@@ -25,6 +25,8 @@ public class PreferenceManager {
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();
+
+        setUserBalance(context, 0);
     }
 
     public static void setUserBalance(Context context, double balance) {

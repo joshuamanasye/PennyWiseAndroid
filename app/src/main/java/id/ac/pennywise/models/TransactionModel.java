@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TransactionModel {
-    private String id;
+    private final String id;
     private CategoryModel category;
     private double amount;
     private String description;
@@ -14,7 +14,6 @@ public class TransactionModel {
 
     public Map<String, Object> toFirebaseMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
         map.put("categoryName", category.getName());
         map.put("amount", amount);
         map.put("description", description);

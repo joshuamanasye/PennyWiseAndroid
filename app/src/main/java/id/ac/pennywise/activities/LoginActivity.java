@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 String userId = PreferenceManager.getUserSession(this);
 
                 TransactionController transactionController = new TransactionController(this);
-                transactionController.loadDataFromFirebase(userId, isDataLoaded -> {
+                transactionController.loadDataFromFirebase(this, userId, isDataLoaded -> {
                     if (isDataLoaded) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
